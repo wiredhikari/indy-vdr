@@ -50,7 +50,7 @@ func readOnlyDemo() {
 	d, _ := json.MarshalIndent(status, " ", " ")
 	fmt.Println(string(d))
 
-	rply, err := client.GetNym("FzAaV9Waa1DccDa72qwg13")
+	rply, err := client.GetNym("9YvhWQp7QSxzFjnhm5HoLks12ENvn72mLm7ESF4LjUtP")
 	if err != nil {
 		log.Fatalln(err)
 	}

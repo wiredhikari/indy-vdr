@@ -96,6 +96,11 @@ def _load_library(lib_name: str) -> CDLL:
     The python module directory is searched first, followed by the usual
     library resolution for the current system.
     """
+    custom_lib_path  = "/home/hikar/dev/indy-vdr/target/debug/libindy_vdr.so"
+
+    if os.path.exists(custom_lib_path):
+        return CDLL(custom_lib_path)
+
     lib_prefix_mapping = {"win32": ""}
     lib_suffix_mapping = {"darwin": ".dylib", "win32": ".dll"}
     try:
@@ -110,8 +115,8 @@ def _load_library(lib_name: str) -> CDLL:
         LOGGER.debug("Unknown platform for shared library")
     except OSError:
         LOGGER.warning("Library not loaded from python package")
-
-    lib_path = find_library(lib_name)
+    print(lib_name)
+    lib_path = find_library("indy_vdr")
     if not lib_path:
         raise VdrError(VdrErrorCode.WRAPPER, f"Error loading library: {lib_name}")
     try:

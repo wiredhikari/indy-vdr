@@ -3,8 +3,7 @@ import json
 import os
 import sys
 import urllib.request
-import nacl.signing
-from indy_vdr import ledger, open_pool, LedgerType, VdrError, VdrErrorCode
+
 from indy_vdr.error import VdrError
 from indy_vdr.bindings import version
 from indy_vdr.ledger import (
@@ -46,7 +45,6 @@ async def get_pool_txns(pool: Pool):
     for txn in await pool.get_transactions():
         print(txn)
 
-
 async def get_txn(pool: Pool, seq_no: int):
     req = build_get_txn_request(None, LedgerType.DOMAIN, seq_no)
     return await pool.submit_request(req)
@@ -60,17 +58,8 @@ async def get_validator_info(pool: Pool):
     req = build_get_validator_info_request("V4SGRU86Z58d6TV7PBUe6f")
     return await pool.submit_action(req)
 
-def sign_request(self, req: ledger.Request, apply_taa: bool = True):
-    if not self._did:
-        raise AnchorException("Cannot sign request: no DID")
-    if apply_taa and self._taa_accept:
-        req.set_txn_author_agreement_acceptance(self._taa_accept)
-    key = nacl.signing.SigningKey("000000000000000000000000Steward1")
-    print("testing")
-    signed = key.sign(req.signature_input)
-    print(signed)
-    req.set_signature(signed.signature)
-    return req
+def get_script_dir():
+    return os.path.dirname(os.path.realpath(__file__))
 
 async def basic_test(transactions_path):
     pool = await open_pool(transactions_path=transactions_path)
@@ -226,22 +215,6 @@ async def basic_test(transactions_path):
     except VdrError as err:
         print(err)
 
-    # --- Rich Schema ---
-
-    # req = build_rich_schema_request(
-    #     None, "did:sov:some_hash", '{"some": 1}', "test", "version", "sch", "1.0.0"
-    # )
-    # log("Get rich schema request:", req.body)
-
-    # req = build_get_schema_object_by_id_request(None, "did:sov:some_hash")
-    # log("Get rich schema GET request by ID:", req.body)
-    #
-    # req = build_get_schema_object_by_metadata_request(None, "sch", "test", "1.0.0")
-    # log("Get rich schema GET request by Metadata:", req.body)
-
-
-def get_script_dir():
-    return os.path.dirname(os.path.realpath(__file__))
 
 
 def download_buildernet_genesis_file():
@@ -255,7 +228,7 @@ def download_buildernet_genesis_file():
 
 
 if __name__ == "__main__":
-    log("indy-vdr  version:", version())
+    log("indy-vdr version:", version())
 
     genesis_path = (
         sys.argv[1] if len(sys.argv) > 1 else download_buildernet_genesis_file()
