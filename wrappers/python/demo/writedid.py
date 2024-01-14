@@ -42,7 +42,7 @@ async def create_did():
 
     req = ledger.build_nym_request(
         TRUSTEE_ID, new_did, verkey=new_verkey, role=None)
-
+    print(req.body)
     key = nacl.signing.SigningKey(TRUSTEE_SEED)
     # author_signed = new_key.sign(req.signature_input)
     sig = key.sign(req.signature_input)
