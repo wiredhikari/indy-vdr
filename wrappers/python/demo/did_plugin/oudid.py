@@ -50,7 +50,7 @@ a. How this is derived???
 # @app.route('/create-did', methods=['POST'])
 async def create_ou_did():
     global indy_pool
-    print('Received create-did request')
+    print('Received OU-did request')
     indy_pool = await pool.open_pool(GENESIS_FILE)
 
     new_key = nacl.signing.SigningKey.generate()
