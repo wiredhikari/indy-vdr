@@ -48,9 +48,9 @@ a. How this is derived???
 
 
 # @app.route('/create-did', methods=['POST'])
-async def create_ou_did():
+async def create_sd_did():
     global indy_pool
-    print('Received OU-did request')
+    print('Received SD-did request')
     indy_pool = await pool.open_pool(GENESIS_FILE)
 
     new_key = nacl.signing.SigningKey.generate()
@@ -63,7 +63,7 @@ async def create_ou_did():
     "identifier": "EbP4aYNeTHL6q385GuVpRV",
     "operation": {
         "dest": "Vzfdscz6YG6n1EuNJV4ob1",
-        "type": "33336",
+        "type": "33337",
         "data": {
             "DIDDocument": {
                 "id": "did:exampleiin:org1",
@@ -104,9 +104,9 @@ async def create_ou_did():
     except Exception as e:
     # try:
         print(f"Error: {e}: {traceback.format_exc()}")
-asyncio.run(create_ou_did())
+asyncio.run(create_sd_did())
 
-# async def update_did():
+# async def update_did():create_did
 #     global indy_pool
 #     print('Received update-did request')
 #     req = ledger.build_nym_request(

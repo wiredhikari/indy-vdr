@@ -44,7 +44,7 @@ async def create_did():
     "identifier": "EbP4aYNeTHL6q385GuVpRV",
     "operation": {
         "dest": "Vzfdscz6YG6n1EuNJV4ob1",
-        "type": "20220",
+        "type": "1",
         "data": {
             "DIDDocument": {
                 "@context": [
@@ -81,8 +81,9 @@ async def create_did():
     "reqId": 1704282737760629997
 }
 """
+    # print(request_body)
     req = ledger.build_custom_request( request_body )
-    # print(req.body)
+    print(req.body)
     key = nacl.signing.SigningKey(TRUSTEE_SEED)
     # author_signed = new_key.sign(req.signature_input)
     sig = key.sign(req.signature_input)
@@ -91,7 +92,7 @@ async def create_did():
     # req.set_multi_signature(new_did, author_signed.signature)
     
 
-    try:
+    try:       
         result = await indy_pool.submit_request(req)
         print(f"Response: {result}")
     except Exception as e:
