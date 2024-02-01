@@ -31,7 +31,7 @@ def key_to_did(key):
 # @app.route('/create-did', methods=['POST'])
 async def create_sec_network_did():
     global indy_pool
-    print('Received OU-did request')
+    print('Received Security-Network DID request')
     indy_pool = await pool.open_pool(GENESIS_FILE)
 
     new_key = nacl.signing.SigningKey.generate()
@@ -46,7 +46,7 @@ async def create_sec_network_did():
         "dest": "Vzfdscz6YG6n1EuNJV4ob1",
         "type": "33331",
         "data": {
-            "SecurityDomainDIDDocument": {
+            "DIDDocument": {
                 "id": "did:iin:<iin_name>:<network_name>",
                 "networkMembers": [
                     "did:iin:<iin_name>:<network_participant_1>",
