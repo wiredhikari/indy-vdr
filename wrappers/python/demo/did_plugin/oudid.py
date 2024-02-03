@@ -62,30 +62,34 @@ async def create_ou_did():
 {
     "identifier": "EbP4aYNeTHL6q385GuVpRV",
     "operation": {
-        "dest": "Vzfdscz6YG6n1EuNJV4ob1",
+        "dest": "TWwCRQRZ2ZHMJFn9TzLp7W",
         "type": "33336",
-        "data": {
-            "DIDDocument": {
-                "id": "did:exampleiin:org1",
-                "verificationMethod": [
+        "data": { "DIDDocument": { "id": "did:exampleiin:org1","verificationMethod":[
                     {
                         "id": "did:exampleiin:org1#key1",
                         "type": "Ed25519VerificationKey2020",
                         "controller": "did:exampleiin:org1",
-                        "publicKeyMultibase": "zH3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
+                        "publicKeyMultibase": "4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA"
                     }
                 ],
                 "authentication": ["did:exampleiin:org1"] 
             },
             "signature": {
-                "verificationMethod": "did:exampleiin:org1#key1",
-                "sigbase64": "sdfsdfsdf"
+                "verificationMethod":[
+                    {
+                        "id": "did:exampleiin:org1#key1",
+                        "type": "libnacl",
+                        "controller": "did:exampleiin:org1",
+                        "publicKeyMultibase": "4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA"
+                    }
+                ],
+                "sigbase64": "MG2bQ+yrRQ/ZbODDFdYL17XVkX2IZk2Y7ts34uvQceOB2R9zS0Yv47id3tXifzf6Vfm5YrnMRR+9eue+s67BAw=="  
             }
         },
-        "verkey": "~HFPBKb7S7ocrTzxakNbcao"
+        "verkey": "TWwCRQRZ2ZHMJFn9TzLp7W"
     },
     "protocolVersion": 2,
-    "reqId": 1704282737760640001
+    "reqId": 1704282737760640010
 }
 """
     req = ledger.build_custom_request( request_body )
@@ -96,17 +100,19 @@ async def create_ou_did():
 
     req.set_signature(sig.signature)
     # req.set_multi_signature(new_did, author_signed.signature)
-    
+    print("hello")
 
     try:
+        print("hello2.1")
         result = await indy_pool.submit_request(req)
         print(f"Response: {result}")
     except Exception as e:
     # try:
+        print("hello2.2")
         print(f"Error: {e}: {traceback.format_exc()}")
 asyncio.run(create_ou_did())
 
-# async def update_did():
+# async def update_did():create_did
 #     global indy_pool
 #     print('Received update-did request')
 #     req = ledger.build_nym_request(
