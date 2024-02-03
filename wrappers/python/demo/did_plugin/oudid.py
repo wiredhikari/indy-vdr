@@ -89,7 +89,7 @@ async def create_ou_did():
         "verkey": "TWwCRQRZ2ZHMJFn9TzLp7W"
     },
     "protocolVersion": 2,
-    "reqId": 1704282737760640010
+    "reqId": 1704282737760640014
 }
 """
     req = ledger.build_custom_request( request_body )
