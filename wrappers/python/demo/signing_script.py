@@ -15,12 +15,14 @@ json_object = {
     "verificationMethod": [
         {
             "id": "did:exampleiin:org1#key1",
-            "type": "Ed25519VerificationKey2020",
+            "type": "libnacl",
             "controller": "did:exampleiin:org1",
             "publicKeyMultibase": "4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA"
         }
     ],
-    "authentication": ["did:exampleiin:org1"] 
+    "authentication": [
+        "did:exampleiin:org1"
+    ]
 }
 
 # Convert the JSON object to a string and then to bytes.
@@ -32,4 +34,4 @@ signature = private_key.sign(json_bytes)
 # Encode the signature in Base64 to make it easy to share or store.
 signature_base64 = Base64Encoder.encode(signature.signature).decode('utf-8')
 
-signature_base64
+print(signature_base64)

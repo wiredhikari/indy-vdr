@@ -27,32 +27,12 @@ def key_to_did(key):
     verkey = "~" + base58.b58encode(key_bytes[16:]).decode("ascii")
     return did, verkey
 
-"""
-NOTE: Expected issue area...
-    1. DIDDocument.authentication >>> originally it doesn't have feilds like "id", "type", "controller".... DOn't know if its required or not.
-    2. Signature > sigbase64 === What is the Use?? 
-
-NOTE: Question...
-a. How this is derived???
->> "signature": {
-                "verificationMethod": "did:exampleiin:org1#key1",
-                "sigbase64": "sdfsdfsdf"
-            }
-        },
-        "verkey": "~HFPBKb7S7ocrTzxakNbcao"
-    },
-    "protocolVersion": 2,
-    "reqId": 1704282737760629997
-"""
-
-
-
 # @app.route('/create-did', methods=['POST'])
 async def create_sd_did():
     global indy_pool
     print('Received SD-did request')
     indy_pool = await pool.open_pool(GENESIS_FILE)
-
+    print("h1")
     new_key = nacl.signing.SigningKey.generate()
     # keys.append(new_key)
     new_did, new_verkey = key_to_did(new_key)
@@ -62,47 +42,101 @@ async def create_sd_did():
 {
     "identifier": "EbP4aYNeTHL6q385GuVpRV",
     "operation": {
-        "dest": "Vzfdscz6YG6n1EuNJV4ob1",
-        "type": "33337",
+        "dest": "TWwCRQRZ2ZHMJFn9TzLp7W",
+        "type": "77777",
         "data": {
             "DIDDocument": {
-                "id": "did:exampleiin:org1",
-                "verificationMethod": [
-                    {
-                        "id": "did:exampleiin:org1#key1",
-                        "type": "Ed25519VerificationKey2020",
-                        "controller": "did:exampleiin:org1",
-                        "publicKeyMultibase": "zH3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
-                    }
+                "id": "did:<iin_name>:<network_name>",
+                "networkMembers": [
+                "did:<iin_name>:<network_member_1>",
+                "did:<iin_name>:<network_member_2>",
+                "did:<iin_name>:<network_member_3>"
                 ],
-                "authentication": ["did:exampleiin:org1"] 
+                "verificationMethod": [{
+                    "id": "did:<iin_name>:<network_name>#multisig",
+                    "type": "BlockchainNetworkMultiSig",
+                    "controller": "did:<iin_name>:<network_name>",
+                    "multisigKeys": [
+                    "did:<iin_name>:<network_member_1>#key1",
+                    "did:<iin_name>:<network_member_2>#key3",
+                    "did:<iin_name>:<network_member_3>#key1"
+                    ],
+                    "updatePolicy": {
+                    "id": "did:<iin_name>:<network_name>#updatepolicy",
+                    "controller": "did:<iin_name>:<network_name>",
+                    "type": "VerifiableCondition2021",
+                    "conditionAnd": [{
+                        "id": "did:<iin_name>:<network_name>#updatepolicy-1",
+                        "controller": "did:<iin_name>:<network_name>",
+                        "type": "VerifiableCondition2021",
+                        "conditionOr": ["did:<iin_name>:<network_member_3>#key1",
+                            "did:<iin_name>:<network_member_2>#key3"
+                        ]
+                        },
+                        "did:<iin_name>:<network_member_1>#key1"
+                    ]
+                    }
+                },
+
+                {
+                    "id": "did:<iin_name>:<network_name>#fabriccerts",
+                    "type": "DataplaneCredentials",
+                    "controller": "did:<iin_name>:<network_name>",
+                    "FabricCredentials": {
+                    "did:<iin_name>:<network_member_1>": "Certificate3_Hash",
+                    "did:<iin_name>:<network_member_2>": "Certificate2_Hash",
+                    "did:<iin_name>:<network_member_3>": "Certificate3_Hash"
+                    }
+                }
+                ],
+                "authentication": [
+                "did:<iin_name>:<network_name>#multisig"
+                ],
+                "relayEndpoints": [{
+                    "hostname": "10.0.0.8",
+                    "port": "8888"
+                },
+                {
+                    "hostname": "10.0.0.9",
+                    "port": "8888"
+                }
+
+                ]
             },
-            "signature": {
-                "verificationMethod": "did:exampleiin:org1#key1",
-                "sigbase64": "sdfsdfsdf"
+            "signatures": {
+                "did:<iin_name>:<network_member_1>": "...",
+                "did:<iin_name>:<network_member_2>": "...",
+                "did:<iin_name>:<network_member_3>": "..."
             }
-        },
+            },
+
         "verkey": "~HFPBKb7S7ocrTzxakNbcao"
     },
     "protocolVersion": 2,
-    "reqId": 1704282737760640001
+    "reqId": 1704282737760649997
 }
 """
     req = ledger.build_custom_request( request_body )
     # print(req.body)
+    print("h2")
     key = nacl.signing.SigningKey(TRUSTEE_SEED)
     # author_signed = new_key.sign(req.signature_input)
     sig = key.sign(req.signature_input)
-
+    print("h3")
     req.set_signature(sig.signature)
     # req.set_multi_signature(new_did, author_signed.signature)
-    
+    print("h4")
+
 
     try:
+        print("h5")
         result = await indy_pool.submit_request(req)
         print(f"Response: {result}")
+        print("h6")
+
     except Exception as e:
     # try:
+        print("h7")
         print(f"Error: {e}: {traceback.format_exc()}")
 asyncio.run(create_sd_did())
 

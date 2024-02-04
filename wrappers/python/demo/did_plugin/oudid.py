@@ -21,31 +21,14 @@ GENESIS_FILE = "/home/hikar/genesis.txn"
 
 TRUSTEE_SEED = b"000000000000000000000000Steward2"
 TRUSTEE_ID = "EbP4aYNeTHL6q385GuVpRV"
+
 def key_to_did(key):
+    # key = TRUSTEE_SEED
     key_bytes = bytes(key.verify_key)
     did = base58.b58encode(key_bytes[:16]).decode("ascii")
     verkey = "~" + base58.b58encode(key_bytes[16:]).decode("ascii")
+    print (f"did::>> {did} ||| verkey::>> {verkey}")
     return did, verkey
-
-"""
-NOTE: Expected issue area...
-    1. DIDDocument.authentication >>> originally it doesn't have feilds like "id", "type", "controller".... DOn't know if its required or not.
-    2. Signature > sigbase64 === What is the Use?? 
-
-NOTE: Question...
-a. How this is derived???
->> "signature": {
-                "verificationMethod": "did:exampleiin:org1#key1",
-                "sigbase64": "sdfsdfsdf"
-            }
-        },
-        "verkey": "~HFPBKb7S7ocrTzxakNbcao"
-    },
-    "protocolVersion": 2,
-    "reqId": 1704282737760629997
-"""
-
-
 
 # @app.route('/create-did', methods=['POST'])
 async def create_ou_did():
@@ -54,8 +37,13 @@ async def create_ou_did():
     indy_pool = await pool.open_pool(GENESIS_FILE)
 
     new_key = nacl.signing.SigningKey.generate()
+    print(new_key)
+    # new_key = TRUSTEE_SEED
     # keys.append(new_key)
     new_did, new_verkey = key_to_did(new_key)
+
+# zH3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV
+# 4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA   XXXXX
 
     print(f"New DID: {new_did}")
     request_body="""
@@ -63,19 +51,11 @@ async def create_ou_did():
     "identifier": "EbP4aYNeTHL6q385GuVpRV",
     "operation": {
         "dest": "TWwCRQRZ2ZHMJFn9TzLp7W",
-        "type": "33336",
-        "data": { "DIDDocument": { "id": "did:exampleiin:org1","verificationMethod":[
-                    {
-                        "id": "did:exampleiin:org1#key1",
-                        "type": "Ed25519VerificationKey2020",
-                        "controller": "did:exampleiin:org1",
-                        "publicKeyMultibase": "4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA"
-                    }
-                ],
-                "authentication": ["did:exampleiin:org1"] 
-            },
-            "signature": {
-                "verificationMethod":[
+        "type": "77776",
+        "data": {
+            "DIDDocument": {
+                "id": "did:exampleiin:org1",
+                "verificationMethod": [
                     {
                         "id": "did:exampleiin:org1#key1",
                         "type": "libnacl",
@@ -83,7 +63,20 @@ async def create_ou_did():
                         "publicKeyMultibase": "4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA"
                     }
                 ],
-                "sigbase64": "MG2bQ+yrRQ/ZbODDFdYL17XVkX2IZk2Y7ts34uvQceOB2R9zS0Yv47id3tXifzf6Vfm5YrnMRR+9eue+s67BAw=="  
+                "authentication": [
+                    "did:exampleiin:org1"
+                ]
+            },
+            "signature": {
+                "verificationMethod": [
+                    {
+                        "id": "did:exampleiin:org1#key1",
+                        "type": "libnacl",
+                        "controller": "did:exampleiin:org1",
+                        "publicKeyMultibase": "4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA"
+                    }
+                ],
+                "sigbase64": "Vz0xMYwovMPr6wyIBVoldel6N2jIh0Drn71+Pv5/5wARXZx6wvXr/jowFGam5dDodrShd/4WC0Ja64miC4KNCA=="
             }
         },
         "verkey": "TWwCRQRZ2ZHMJFn9TzLp7W"
