@@ -60,15 +60,15 @@ async def create_did():
             print(f"Error: {e}: {traceback.format_exc()}")
 asyncio.run(create_did())
 
-# async def update_did():
-#     global indy_pool
-#     print('Received update-did request')
-#     req = ledger.build_nym_request(
-#         TRUSTEE_ID, TRUSTEE_ID, alias=random.choice(aliases))
+async def update_did():
+    global indy_pool
+    print('Received update-did request')
+    req = ledger.build_nym_request(
+        TRUSTEE_ID, TRUSTEE_ID, alias=random.choice(aliases))
 
-#     key = nacl.signing.SigningKey(TRUSTEE_SEED)
-#     sig = key.sign(req.signature_input)
-#     req.set_signature(sig.signature)
+    key = nacl.signing.SigningKey(TRUSTEE_SEED)
+    sig = key.sign(req.signature_input)
+    req.set_signature(sig.signature)
 
-#     await indy_pool.submit_request(req)
-# asyncio.run(update())
+    await indy_pool.submit_request(req)
+asyncio.run(update())
