@@ -28,9 +28,9 @@ def key_to_did(key):
     return did, verkey
 
 # @app.route('/create-did', methods=['POST'])
-async def create_sd_did():
+async def update_sd_did():
     global indy_pool
-    print('Received SD-did request')
+    print('Received Update-did request')
     indy_pool = await pool.open_pool(GENESIS_FILE)
     print("h1")
     new_key = nacl.signing.SigningKey.generate()
@@ -45,7 +45,7 @@ async def create_sd_did():
         "dest": "TWwCRQRZ2ZHMJFn9TzLp7W",
         "type": "77777",
         "data": {
-            "DIDDocument": { 
+            "DIDDocument": {
                 "id": "did:iin_name:network_name",
                 "networkMembers": [
                 "did:iin_name:network_member_1",
@@ -58,7 +58,7 @@ async def create_sd_did():
                     "controller": "did:iin_name:network_name",
                     "multisigKeys": [
                         "did:iin_name:network_member_1#key1",
-                        "did:iin_name:network_member_2#key3",
+                        "did:iin_name:network_member_2#key1",
                         "did:iin_name:network_member_3#key1"
                     ],
                     "updatePolicy": {
@@ -70,7 +70,7 @@ async def create_sd_did():
                         "controller": "did:iin_name:network_name",
                         "type": "VerifiableCondition2021",
                         "conditionOr": ["did:iin_name:network_member_3#key1",
-                            "did:iin_name:network_member_2#key3"
+                            "did:iin_name:network_member_2#key1"
                         ]
                         },
                         "did:iin_name:network_member_1#key1"
@@ -92,7 +92,7 @@ async def create_sd_did():
                 "authentication": [
                 "did:iin_name:network_name#multisig"
                 ],
-                 "relayEndpoints": [{
+                "relayEndpoints": [{
                     "hostname": "10.0.0.8",
                     "port": "8888"
                 },
@@ -104,16 +104,16 @@ async def create_sd_did():
                 ]
             },
             "signatures": {
-                "did:iin_name:network_member_1": "BBCB75708867FD278D359E256FAD9AA3A85F02D64D2FB54C41DF081AA41B64D8087D6F94315CAF0C4A37179EBBF5650EB2ABE978ECDE8FBE6AF3646BE6A3D10D",
-                "did:iin_name:network_member_2": "5895AAAAF1B320290962DB31D4C6F7930037F02835C5279C5F8F854D7AA5101ABA10CF136242CD744A1167B43294A7B49BA26F6C9BB9E8922123EF488CE4E703",
-                "did:iin_name:network_member_3": "AE41AC9A626D93E5669C369E407AFCA006F28DD78F18635109B0249F9C2ABAF3F0453951A0CB41E41050D93BCD8CAA9CCE85A813CF12088CA38AA0F146227001"
+                "did:iin_name:network_member_1": "fz9zxRvgqqZMrRXFz2HJyBVJwaC9acB9OwzitGqOT9XsTH7vgnDZRwlQxUCPEvo+nJNgV/8BNDjzOAj9w6r7Aw==",
+                "did:iin_name:network_member_2": "...",
+                "did:iin_name:network_member_3": "..."
             }
             },
 
         "verkey": "~HFPBKb7S7ocrTzxakNbcao"
     },
     "protocolVersion": 2,
-    "reqId": 17042827377606
+    "reqId": 1704282737760649997
 }
 """
     req = ledger.build_custom_request( request_body )
@@ -138,7 +138,7 @@ async def create_sd_did():
     # try:
         print("h7")
         print(f"Error: {e}: {traceback.format_exc()}")
-asyncio.run(create_sd_did())
+asyncio.run(update_sd_did())
 
 # async def update_did():create_did
 #     global indy_pool

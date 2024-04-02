@@ -4,29 +4,31 @@ import json
 
 # Mock private key for demonstration; in real use, a valid Ed25519 private key should be provided.
 # The provided private key is not in a valid format, so we're using a placeholder for demonstration.
-mock_private_key_hex = "a" * 64  # A 32-byte (64 characters in hexadecimal) mock private key.
-
+mock_private_key_hex = "5FC32A64AAD3E3CE5AE1979F006C65518F02DFE4CE45EEF3809DEEAE7786C501"  # A 32-byte (64 characters in hexadecimal) mock private key.
+print(mock_private_key_hex)
 # Decode the mock private key from hexadecimal.
 private_key = SigningKey(mock_private_key_hex, encoder=HexEncoder)
 
 # The JSON object to be signed.
 json_object = {
-    "id": "did:exampleiin:org1",
-    "verificationMethod": [
-        {
-            "id": "did:exampleiin:org1#key1",
-            "type": "libnacl",
-            "controller": "did:exampleiin:org1",
-            "publicKeyMultibase": "4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA"
-        }
-    ],
-    "authentication": [
-        "did:exampleiin:org1"
-    ]
+                "authentication": [
+                    "did:iin_name:network_member_1"
+                ],
+                "id": "did:exampleiin:network_member_1",
+                "verificationMethod": [
+                    {
+                        "id": "did:iin_name:network_member_1#key1",
+                        "type": "libnacl",
+                        "controller": "did:iin_name:network_member_1",
+                        "publicKeyMultibase": "D3C2E00FEA8E0E9A005CF2D2863B52F3FBE3657088593DB8E3B9EA8E88609861"
+                    }
+                ]
+            
 }
 
 # Convert the JSON object to a string and then to bytes.
-json_bytes = json.dumps(json_object, separators=(',', ':')).encode('utf-8')
+json_bytes = json.dumps(json_object).encode('utf-8')
+print(json_bytes)
 
 # Sign the JSON bytes.
 signature = private_key.sign(json_bytes)

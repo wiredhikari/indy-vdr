@@ -15,9 +15,9 @@ def libnacl_validate(vk_base64, signature_base64, originalhash):
 
 
 # Provided values
-vk_base64 = '4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA'
-signature_base64 = "MG2bQ+yrRQ/ZbODDFdYL17XVkX2IZk2Y7ts34uvQceOB2R9zS0Yv47id3tXifzf6Vfm5YrnMRR+9eue+s67BAw=="
-originalhash = b'\xdfC\xa4\xdf\xb3\xbd^\xde\xdf\xf8\t\xda\x14l\x88\xe9V\xd0\xd0\x19QI\xad\x89\xfdI\xd9\xd6\xe0rA\x94'
+vk_base64 = 'NUJMMnZHWEFqdFMzcmRmUjJtVmRwVw=='
+signature_base64 = "fz9zxRvgqqZMrRXFz2HJyBVJwaC9acB9OwzitGqOT9XsTH7vgnDZRwlQxUCPEvo+nJNgV/8BNDjzOAj9w6r7Aw=="
+originalhash = b'\xa5i\x95\xcc\xf0cB\\\x8b\x86U\x02\xcaR\xf1?\xcd?\x89\xdf\xfa\xa9\xe6s"\xfd?V\x1dS\x00\xd8'
 
 # Call the function with the provided values
 verification_result = libnacl_validate(vk_base64, signature_base64, originalhash)
